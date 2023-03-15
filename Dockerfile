@@ -1,16 +1,12 @@
-FROM debian:11-slim
+FROM ubuntu:rolling
 ARG DEBIAN_FRONTEND=noninteractive
+WORKDIR /app
 ENV TZ=Europe/Helsinki
-RUN apt-get -y update && \
-    apt install -y curl && \
-    curl -fsSL https://deb.nodesource.com/setup_16.x | bash && \
-    apt install -y nodejs
-RUN apt-get -y update && \
-    apt-get install -y ffmpeg bash python3 python3-pip git &&\
-    apt-get -y update && \
-    apt-get clean all
-RUN python3 -m pip install --upgrade git+https://github.com/yt-dlp/yt-dlp.git@release
-WORKDIR /workspace
+RUN apt-get -qq update && apt-get -qq install zip git ffmpeg build-essential python3
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash && \
+    apt install -y nodejs npm
+RUN cd /tmp && git clone https://github.com/yt-dlp/yt-dlp --depth=1
+RUN cd /tmp/yt-dlp && make yt-dlp && mkdir -p /usr/local/bin && mv yt-dlp /usr/local/bin/
 COPY package.json package.json
 COPY package-lock.json package-lock.json
 COPY index.js index.js
