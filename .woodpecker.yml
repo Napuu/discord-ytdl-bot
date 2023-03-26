@@ -2,16 +2,16 @@ pipeline:
   publish:
     image: woodpeckerci/plugin-docker-buildx
     settings:
-      dockerfile: Dockerfile
       platforms: linux/amd64
-      repo: docker-registry4.napuu.xyz/discordbot-forked
+      repo:
+        from_secret: TARGET_REPOSITORY
       registry:
-        from_secret: registry-host
+        from_secret: REGISTRY_HOST
       tags: latest
       username: 
-        from_secret: registry-user
+        from_secret: REGISTRY_USER
       password:
-        from_secret: registry-password
+        from_secret: REGISTRY_PASSWORD
     when:
       event: push
 
@@ -19,15 +19,13 @@ pipeline:
     image: appleboy/drone-ssh
     settings:
       host:
-        from_secret: server-host
+        from_secret: PROD_SERVER_HOST
       username:
-        from_secret: server-user
+        from_secret: PROD_SERVER_USER
       key:
-        from_secret: server-key
-      port: 22
-      command_timeout: 2m
+        from_secret: PROD_SERVER_KEY
       script:
-        - /usr/local/bin/kubectl rollout restart deployment discordbot-forked
+        from_secret: DEPLOYMENT_NAME
     when:
       event: push
 
