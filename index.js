@@ -74,7 +74,7 @@ client.on("messageCreate", async (message) => {
         await sleepMillis(noppa()*2000)
         message.reply(`Noppa 2: ${noppa2}`)
         message.reply(noppa1 === noppa2 ? 'Tuplat tuli 😎' : 'Ei tuplia 😿');
-    } else if (command === "tuplilla") {
+    } else if (command === "tuplilla2") {
         const act = message.content.split("!" + command).slice(1)[0]
         if (act === "") {
             return message.reply("Hyvä viesti...")
@@ -93,7 +93,7 @@ client.on("messageCreate", async (message) => {
             message.reply(`Noppa 2: ${noppa2}`)
             message.reply((tuplat ? 'Tuplat tuli,' : 'Ei tuplia,') + answerCompletion + (tuplat ? " 😎" : " 😿"));
         }
-    } else if (command === "test") {
+    } else if (command === "tuplilla") {
         const act = message.content.split("!" + command).slice(1)[0]
         if (act === "") {
             return message.reply("Hyvä viesti...")
