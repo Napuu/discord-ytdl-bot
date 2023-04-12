@@ -14,13 +14,11 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-const promptDivider = "DIVIDER"
-const positivePrefix = "Positiivinen: "
-const negativePrefix = "Negatiivinen: "
-const tuplaCompletion = async (act) => (
+const addDot = (prompt) => prompt.endsWith(".") ? prompt : prompt + "."
+const tuplaCompletion = async (prompt) => (
     openai.createCompletion({
       model: "text-davinci-003",
-      prompt: `Lähtökohta: Tuplilla Pekka menee töihin.${promptDivider}${positivePrefix}Pekka menee töihin.${promptDivider}${negativePrefix}Pekka ei mene töihin.${promptDivider}Lähtökohta: Tuplilla ${act}.${promptDivider}`,
+      prompt: `Jatka seuraavia esimerkkejä\nEsimerkki --- pekka menee töihin. --- pekka ei mene töihin.\nEsimerkki --- Mikko kellottaa. --- Mikko ei kellota.\nEsimerkki --- ryynikännit. --- ei ryynikännejä.\nEsimerkki --- kellotus. --- ei kellotusta.\nEsimerkki --- vaimo ja 200k asuntolainaa. --- ei vaimoa eikä 200k asuntolainaa.\nesimerkki --- ${addDot(prompt)} ---`,
       temperature: 0.7,
       max_tokens: 256,
       top_p: 1,
@@ -77,21 +75,11 @@ client.on("messageCreate", async (message) => {
             message.reply(`Noppa 1: ${noppa1}`)
             message.channel.sendTyping()
             const completionText = (await tuplaCompletion(act)).data.choices[0].text
-            let answerCompletion = ""
+            let answerCompletion = tuplat ? addDot(act) : completionText
             const tuplat = noppa1 === noppa2
-            if (completionText) {
-                const answers = completionText.split("DIVIDER")
-                if (answers.length === 2) {
-                    if (tuplat) {
-                        answerCompletion = answers.find(answer => answer.startsWith(positivePrefix)).replace(positivePrefix, "")
-                    } else {
-                        answerCompletion = answers.find(answer => answer.startsWith(negativePrefix)).replace(negativePrefix, "")
-                    }
-                }
-            }
             await sleepMillis(noppa()*1000)
             message.reply(`Noppa 2: ${noppa2}`)
-            message.reply(tuplat ? 'Tuplat tuli 😎' : 'Ei tuplia 😿' + ' - ' + answerCompletion);
+            message.reply(tuplat ? 'Tuplat tuli,' : 'Ei tuplia,' + answerCompletion + tuplat ? " 😎" : " 😿");
         }
     }
     else if (isValidHttpUrl(command)) {
