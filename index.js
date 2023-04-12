@@ -39,10 +39,10 @@ client.on("messageCreate", async (message) => {
     } else if (command === "noppa") {
         return message.reply(`${noppa()}`);
     } else if (command === "tuplat") {
-        message.channel.sendTyping()
         const noppa1 = noppa()
         const noppa2 = noppa()
         message.reply(`Noppa 1: ${noppa1}`)
+        message.channel.sendTyping()
         await sleepMillis(noppa()*2000)
         message.reply(`Noppa 2: ${noppa2}`)
         message.reply(noppa1 === noppa2 ? 'Tuplat tuli 😎' : 'Ei tuplia 😿');
