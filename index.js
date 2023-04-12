@@ -20,7 +20,7 @@ const negativePrefix = "Negatiivinen: "
 const tuplaCompletion = async (act) => (
     openai.createCompletion({
       model: "text-davinci-003",
-      prompt: `Lähtökohta: Tuplilla Pekka menee töihin.${promptDivider}${positivePrefix}Tuplat, Pekka menee töihin.${promptDivider}${negativePrefix}Ei tuplia, Pekka ei mene töihin.${promptDivider}Lähtökohta: Tuplilla ${act}.${promptDivider}`,
+      prompt: `Lähtökohta: Tuplilla Pekka menee töihin.${promptDivider}${positivePrefix}Pekka menee töihin.${promptDivider}${negativePrefix}Pekka ei mene töihin.${promptDivider}Lähtökohta: Tuplilla ${act}.${promptDivider}`,
       temperature: 0.7,
       max_tokens: 256,
       top_p: 1,
@@ -83,9 +83,9 @@ client.on("messageCreate", async (message) => {
                 const answers = completionText.split("DIVIDER")
                 if (answers.length === 2) {
                     if (tuplat) {
-                        answerCompletion = answers.find(answer => answer.startsWith(positivePrefix))
+                        answerCompletion = answers.find(answer => answer.startsWith(positivePrefix)).replace(positivePrefix, "")
                     } else {
-                        answerCompletion = answers.find(answer => answer.startsWith(negativePrefix))
+                        answerCompletion = answers.find(answer => answer.startsWith(negativePrefix)).replace(negativePrefix, "")
                     }
                 }
             }
