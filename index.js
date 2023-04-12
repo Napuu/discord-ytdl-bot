@@ -20,7 +20,7 @@ client.on("messageCreate", async (message) => {
     const args = commandBody.split(' ');
     const command = args.shift()
     const noppa = () => randomInt(1, 7)
-    const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+    const sleepMillis = (ms) => new Promise(resolve => setTimeout(resolve, ms))
 
     if (command === "ping") {
         const timeTaken = Date.now() - message.createdTimestamp;
@@ -44,7 +44,7 @@ client.on("messageCreate", async (message) => {
         const noppa2 = noppa()
         const id = nanoid(3)
         message.reply(`Noppa 1 - ${id}: ${noppa1}`)
-        await sleep(noppa()*2)
+        await sleepMillis(noppa()*2000)
         message.reply(`Noppa 2 - ${id}: ${noppa2}`)
         message.reply(noppa1 === noppa2 ? 'tuplat tuli 😎' : 'ei tuplia 😿');
     }
