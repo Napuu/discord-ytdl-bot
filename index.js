@@ -80,7 +80,9 @@ client.on("messageCreate", async (message) => {
             const noppa2 = noppa()
             message.reply(`Noppa 1: ${noppa1}`)
             message.channel.sendTyping()
+            console.log("1??", act)
             const completionText = (await tuplaCompletion(act)).data.choices[0].text
+            console.log("2??", completionText)
             let answerCompletion = tuplat ? addDot(act) : completionText
             const tuplat = noppa1 === noppa2
             await sleepMillis(noppa()*1000)
