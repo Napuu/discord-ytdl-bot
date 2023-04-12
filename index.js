@@ -20,6 +20,8 @@ client.on("messageCreate", async (message) => {
     const args = commandBody.split(' ');
     const command = args.shift()
     const noppa = () => randomInt(1, 7)
+    const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+
     if (command === "ping") {
         const timeTaken = Date.now() - message.createdTimestamp;
         message.reply(`Pong! This message had a latency of ${timeTaken}ms.`);
@@ -37,9 +39,14 @@ client.on("messageCreate", async (message) => {
     } else if (command === "noppa") {
         return message.reply(`${noppa()}`);
     } else if (command === "tuplat") {
+        message.channel.sendTyping()
         const noppa1 = noppa()
         const noppa2 = noppa()
-        return message.reply(`${noppa1}, ${noppa2} - ${noppa1 === noppa2 ? 'tuplat tuli 😎' : 'ei tuplia 😿'}`);
+        const id = nanoid(3)
+        message.reply(`Noppa 1 - ${id}: ${noppa1}`)
+        await sleep(noppa()*2)
+        message.reply(`Noppa 2 - ${id}: ${noppa2}`)
+        message.reply(noppa1 === noppa2 ? 'tuplat tuli 😎' : 'ei tuplia 😿');
     }
     else if (isValidHttpUrl(command)) {
         message.suppressEmbeds(true)
