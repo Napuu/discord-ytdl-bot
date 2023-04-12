@@ -91,7 +91,7 @@ client.on("messageCreate", async (message) => {
             let answerCompletion = tuplat ? addDot(act) : completionText
             await sleepMillis(noppa()*1000)
             message.reply(`Noppa 2: ${noppa2}`)
-            message.reply(tuplat ? 'Tuplat tuli,' : 'Ei tuplia,' + answerCompletion + tuplat ? " 😎" : " 😿");
+            message.reply((tuplat ? 'Tuplat tuli,' : 'Ei tuplia,') + answerCompletion + (tuplat ? " 😎" : " 😿"));
         }
     }
     else if (isValidHttpUrl(command)) {
