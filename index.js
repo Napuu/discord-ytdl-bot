@@ -7,6 +7,27 @@ const fs = require('fs').promises;
 const client = new Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
 const moment = require('moment');
 const {randomInt} = require('crypto')
+const { Configuration, OpenAIApi } = require("openai");
+
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
+
+const promptDivider = "DIVIDER"
+const positivePrefix = "Positiivinen: "
+const negativePrefix = "Negatiivinen: "
+const tuplaCompletion = async (act) => (
+    openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: `Lähtökohta: Tuplilla Pekka menee töihin.${promptDivider}${positivePrefix}Tuplat, Pekka menee töihin.${promptDivider}${negativePrefix}Ei tuplia, Pekka ei mene töihin.${promptDivider}Lähtökohta: Tuplilla ${act}.${promptDivider}`,
+      temperature: 0.7,
+      max_tokens: 256,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
+    })
+)
 
 client.once('ready', () => {
     console.log('Bot is running!');
@@ -46,6 +67,32 @@ client.on("messageCreate", async (message) => {
         await sleepMillis(noppa()*2000)
         message.reply(`Noppa 2: ${noppa2}`)
         message.reply(noppa1 === noppa2 ? 'Tuplat tuli 😎' : 'Ei tuplia 😿');
+    } else if (command === "tuplilla") {
+        const content = message.content.split("!" + command).slice(1)
+        if (content === "") {
+            return message.reply("Hyvä viesti...")
+        } else {
+            const noppa1 = noppa()
+            const noppa2 = noppa()
+            message.reply(`Noppa 1: ${noppa1}`)
+            message.channel.sendTyping()
+            const completionText = (await tuplaCompletion(act)).choices[0].text
+            let answerCompletion = ""
+            const tuplat = noppa1 === noppa2
+            if (completionText) {
+                const answers = completionText.split("DIVIDER")
+                if (answers.length === 2) {
+                    if (tuplat) {
+                        answerCompletion = answers.find(answer => answer.startsWith(positivePrefix))
+                    } else {
+                        answerCompletion = answers.find(answer => answer.startsWith(negativePrefix))
+                    }
+                }
+            }
+            await sleepMillis(noppa()*1000)
+            message.reply(`Noppa 2: ${noppa2}`)
+            message.reply(tuplat ? 'Tuplat tuli 😎' : 'Ei tuplia 😿' + ' - ' + answerCompletion);
+        }
     }
     else if (isValidHttpUrl(command)) {
         message.suppressEmbeds(true)
