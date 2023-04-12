@@ -76,7 +76,7 @@ client.on("messageCreate", async (message) => {
             const noppa2 = noppa()
             message.reply(`Noppa 1: ${noppa1}`)
             message.channel.sendTyping()
-            const completionText = (await tuplaCompletion(act)).choices[0].text
+            const completionText = (await tuplaCompletion(act)).data.choices[0].text
             let answerCompletion = ""
             const tuplat = noppa1 === noppa2
             if (completionText) {
