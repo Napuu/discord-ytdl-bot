@@ -14,15 +14,17 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-const addDot = (prompt) => prompt.endsWith(".") ? prompt : prompt + "."
+const addDot = (prompt) => prompt.endsWith(".") ? prompt : (prompt + ".")
 const removeDot = (str) => {
   if (str.endsWith('.')) {
     return str.slice(0, -1);
   }
   return str;
 }
-const tuplaCompletion = async (act) => (
-    openai.createCompletion({
+const tuplaCompletion = async (act) => {
+    console.log("asdffdsa", act)
+    console.log("asdffda", addDot)
+    return openai.createCompletion({
       model: "text-davinci-003",
       prompt: `Jatka seuraavia esimerkkejä\nEsimerkki --- pekka menee töihin. --- pekka ei mene töihin.\nEsimerkki --- Mikko kellottaa. --- Mikko ei kellota.\nEsimerkki --- ryynikännit. --- ei ryynikännejä.\nEsimerkki --- kellotus. --- ei kellotusta.\nEsimerkki --- vaimo ja 200k asuntolainaa. --- ei vaimoa eikä 200k asuntolainaa.\nesimerkki --- ${addDot(act)} ---`,
       temperature: 0.7,
@@ -81,7 +83,8 @@ client.on("messageCreate", async (message) => {
             message.reply(`Noppa 1: ${noppa1}`)
             message.channel.sendTyping()
             console.log("1??", act)
-            const completionText = (await tuplaCompletion(act)).data.choices[0].text
+            const openaiResponse = await tuplaCompletion(act)
+            const completionText = openaiResponse.data.choices[0].text
             console.log("2??", completionText)
             let answerCompletion = tuplat ? addDot(act) : completionText
             const tuplat = noppa1 === noppa2
