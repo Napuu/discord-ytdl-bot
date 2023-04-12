@@ -75,7 +75,7 @@ client.on("messageCreate", async (message) => {
         message.reply(`Noppa 2: ${noppa2}`)
         message.reply(noppa1 === noppa2 ? 'Tuplat tuli 😎' : 'Ei tuplia 😿');
     } else if (command === "tuplilla") {
-        const act = message.content.split("!" + command).slice(1)
+        const act = message.content.split("!" + command).slice(1)[0]
         if (act === "") {
             return message.reply("Hyvä viesti...")
         } else {
