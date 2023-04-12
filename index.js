@@ -42,10 +42,9 @@ client.on("messageCreate", async (message) => {
         message.channel.sendTyping()
         const noppa1 = noppa()
         const noppa2 = noppa()
-        const id = nanoid(3)
-        message.reply(`Noppa 1 - ${id}: ${noppa1}`)
+        message.reply(`Noppa 1: ${noppa1}`)
         await sleepMillis(noppa()*2000)
-        message.reply(`Noppa 2 - ${id}: ${noppa2}`)
+        message.reply(`Noppa 2: ${noppa2}`)
         message.reply(noppa1 === noppa2 ? 'Tuplat tuli 😎' : 'Ei tuplia 😿');
     }
     else if (isValidHttpUrl(command)) {
