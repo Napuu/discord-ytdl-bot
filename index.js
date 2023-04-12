@@ -23,7 +23,8 @@ const removeDot = (str) => {
 }
 const tuplaCompletion = async (act) => {
     console.log("asdffdsa", act)
-    console.log("asdffda", addDot)
+    console.log("asdsfdsa", addDot)
+    console.log("addffdsa", addDot(act))
     return openai.createCompletion({
       model: "text-davinci-003",
       prompt: `Jatka seuraavia esimerkkejä\nEsimerkki --- pekka menee töihin. --- pekka ei mene töihin.\nEsimerkki --- Mikko kellottaa. --- Mikko ei kellota.\nEsimerkki --- ryynikännit. --- ei ryynikännejä.\nEsimerkki --- kellotus. --- ei kellotusta.\nEsimerkki --- vaimo ja 200k asuntolainaa. --- ei vaimoa eikä 200k asuntolainaa.\nesimerkki --- ${addDot(act)} ---`,
@@ -33,7 +34,7 @@ const tuplaCompletion = async (act) => {
       frequency_penalty: 0,
       presence_penalty: 0,
     })
-)
+}
 
 client.once('ready', () => {
     console.log('Bot is running!');
