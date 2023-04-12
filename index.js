@@ -5,8 +5,8 @@ const yt = require('youtube-search-without-api-key');
 const { nanoid } = require("nanoid");
 const fs = require('fs').promises;
 const client = new Client({ intents: ["GUILDS", "GUILD_MESSAGES"] });
-const path = require("path");
-var moment = require('moment');
+const moment = require('moment');
+const {randomInt} = require('crypto')
 
 client.once('ready', () => {
     console.log('Bot is running!');
@@ -19,6 +19,7 @@ client.on("messageCreate", async (message) => {
     const commandBody = message.content.slice(prefix.length);
     const args = commandBody.split(' ');
     const command = args.shift()
+    const noppa = () => randomInt(1, 7)
     if (command === "ping") {
         const timeTaken = Date.now() - message.createdTimestamp;
         message.reply(`Pong! This message had a latency of ${timeTaken}ms.`);
@@ -34,8 +35,11 @@ client.on("messageCreate", async (message) => {
             return message.reply(`Hyvä hakusana.... no videos under 1minute found from top 10 results ${Date.now() - message.createdTimestamp}ms`);
         }
     } else if (command === "noppa") {
-        const dice = Math.floor(Math.random() * 6) + 1;
-        return message.reply(`${dice}`);
+        return message.reply(`${noppa()}`);
+    } else if (command === "tuplat") {
+        const noppa1 = noppa()
+        const noppa2 = noppa()
+        return message.reply(`${noppa1}, ${noppa2} - ${noppa1 === noppa2 ? 'tuplat tuli 😎' : 'ei tuplia 😿'}`);
     }
     else if (isValidHttpUrl(command)) {
         message.suppressEmbeds(true)
