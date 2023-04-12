@@ -87,8 +87,8 @@ client.on("messageCreate", async (message) => {
             const openaiResponse = await tuplaCompletion(act)
             const completionText = openaiResponse.data.choices[0].text
             console.log("2??", completionText)
-            let answerCompletion = tuplat ? addDot(act) : completionText
             const tuplat = noppa1 === noppa2
+            let answerCompletion = tuplat ? addDot(act) : completionText
             await sleepMillis(noppa()*1000)
             message.reply(`Noppa 2: ${noppa2}`)
             message.reply(tuplat ? 'Tuplat tuli,' : 'Ei tuplia,' + answerCompletion + tuplat ? " 😎" : " 😿");
