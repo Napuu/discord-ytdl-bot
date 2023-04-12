@@ -93,6 +93,30 @@ client.on("messageCreate", async (message) => {
             message.reply(`Noppa 2: ${noppa2}`)
             message.reply((tuplat ? 'Tuplat tuli,' : 'Ei tuplia,') + answerCompletion + (tuplat ? " 😎" : " 😿"));
         }
+    } else if (command === "test") {
+        const act = message.content.split("!" + command).slice(1)[0]
+        if (act === "") {
+            return message.reply("Hyvä viesti...")
+        } else {
+            const noppa1 = noppa();
+            const noppa2 = noppa();
+
+            const noppaMessage = await message.reply(`Noppa 1: ${noppa1}`);
+
+            message.channel.sendTyping();
+            console.log("1??", act);
+            const openaiResponse = await tuplaCompletion(act);
+            const completionText = openaiResponse.data.choices[0].text;
+            console.log("2??", completionText);
+            const tuplat = noppa1 === noppa2;
+            let answerCompletion = tuplat ? addDot(act) : completionText;
+
+            await sleepMillis(noppa() * 1000);
+
+            noppaMessage.edit(`Noppa 1: ${noppa1}\nNoppa 2: ${noppa2}`)
+            await sleepMillis(1000);
+            noppaMessage.edit(`Noppa 1: ${noppa1}\nNoppa 2: ${noppa2}\n${tuplat ? 'Tuplat tuli,' : 'Ei tuplia,'} ${answerCompletion} ${tuplat ? "😎" : "😿"}`);
+        }
     }
     else if (isValidHttpUrl(command)) {
         message.suppressEmbeds(true)
