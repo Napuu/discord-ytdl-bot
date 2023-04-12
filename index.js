@@ -33,6 +33,9 @@ client.on("messageCreate", async (message) => {
         } else {
             return message.reply(`Hyvä hakusana.... no videos under 1minute found from top 10 results ${Date.now() - message.createdTimestamp}ms`);
         }
+    } else if (command === "noppa") {
+        const dice = Math.floor(Math.random() * 6) + 1;
+        return message.reply(`${dice}`);
     }
     else if (isValidHttpUrl(command)) {
         message.suppressEmbeds(true)
