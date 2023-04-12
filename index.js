@@ -46,7 +46,7 @@ client.on("messageCreate", async (message) => {
         message.reply(`Noppa 1 - ${id}: ${noppa1}`)
         await sleepMillis(noppa()*2000)
         message.reply(`Noppa 2 - ${id}: ${noppa2}`)
-        message.reply(noppa1 === noppa2 ? 'tuplat tuli 😎' : 'ei tuplia 😿');
+        message.reply(noppa1 === noppa2 ? 'Tuplat tuli 😎' : 'Ei tuplia 😿');
     }
     else if (isValidHttpUrl(command)) {
         message.suppressEmbeds(true)
