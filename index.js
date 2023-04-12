@@ -15,10 +15,16 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 const addDot = (prompt) => prompt.endsWith(".") ? prompt : prompt + "."
-const tuplaCompletion = async (prompt) => (
+const removeDot = (str) => {
+  if (str.endsWith('.')) {
+    return str.slice(0, -1);
+  }
+  return str;
+}
+const tuplaCompletion = async (act) => (
     openai.createCompletion({
       model: "text-davinci-003",
-      prompt: `Jatka seuraavia esimerkkejä\nEsimerkki --- pekka menee töihin. --- pekka ei mene töihin.\nEsimerkki --- Mikko kellottaa. --- Mikko ei kellota.\nEsimerkki --- ryynikännit. --- ei ryynikännejä.\nEsimerkki --- kellotus. --- ei kellotusta.\nEsimerkki --- vaimo ja 200k asuntolainaa. --- ei vaimoa eikä 200k asuntolainaa.\nesimerkki --- ${addDot(prompt)} ---`,
+      prompt: `Jatka seuraavia esimerkkejä\nEsimerkki --- pekka menee töihin. --- pekka ei mene töihin.\nEsimerkki --- Mikko kellottaa. --- Mikko ei kellota.\nEsimerkki --- ryynikännit. --- ei ryynikännejä.\nEsimerkki --- kellotus. --- ei kellotusta.\nEsimerkki --- vaimo ja 200k asuntolainaa. --- ei vaimoa eikä 200k asuntolainaa.\nesimerkki --- ${addDot(act)} ---`,
       temperature: 0.7,
       max_tokens: 256,
       top_p: 1,
