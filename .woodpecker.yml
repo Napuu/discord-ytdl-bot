@@ -2,7 +2,9 @@ pipeline:
   publish:
     image: woodpeckerci/plugin-docker-buildx
     settings:
-      platforms: linux/amd64
+      platforms:
+        - linux/amd64
+        - linux/arm/v7
       repo:
         from_secret: TARGET_REPOSITORY
       registry:
