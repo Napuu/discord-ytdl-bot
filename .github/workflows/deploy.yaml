@@ -23,5 +23,5 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.KEY }}
         port: 22
-  +     fingerprint: ${{ secrets.FINGERPRINT }}
+        fingerprint: ${{ secrets.FINGERPRINT }}
         script: discordbot-forked
